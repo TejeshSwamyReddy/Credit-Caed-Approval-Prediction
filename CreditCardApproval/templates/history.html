@@ -1,0 +1,85 @@
+{% extends 'layout.html' %}
+
+{% block title %}Apex Bank - Credit Evaluation History{% endblock %}
+
+{% block content %}
+<section class="py-5 bg-light" id="historySection">
+    <div class="container">
+        <!-- Header -->
+        <div class="row mb-5" id="historyHeader">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-5 fw-bold outfit-font text-navy" id="historyTitle">Vetting Transaction History</h1>
+                <p class="text-muted lead" id="historySubtext">Review and audit recent credit card approval predictions processed in your current browser session.</p>
+            </div>
+        </div>
+
+        <div class="row" id="historyMainRow">
+            <div class="col-lg-10 mx-auto">
+                
+                <div class="card border-0 shadow-sm rounded-4" id="historyTableCard">
+                    <div class="card-header bg-white border-bottom border-light-gray py-3 d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3">
+                        <h5 class="card-title text-navy outfit-font fw-bold mb-0" id="historyCardHeading">Evaluation Logs <span class="badge bg-light text-navy border ms-1 rounded-pill fs-12 fw-medium" id="historyCountBadge">{{ history|length }} Logs</span></h5>
+                        {% if history %}
+                        <a href="{{ url_for('clear_history') }}" class="btn btn-outline-danger btn-sm rounded-pill px-3 py-1.5 fw-semibold" id="clearHistoryBtn">
+                            <i class="bi bi-trash3 me-1"></i> Clear Audit Logs
+                        </a>
+                        {% endif %}
+                    </div>
+                    <div class="card-body p-0">
+                        {% if history %}
+                        <div class="table-responsive" id="historyTableWrapper">
+                            <table class="table table-hover align-middle mb-0" id="historyTable">
+                                <thead class="table-light fs-13">
+                                    <tr>
+                                        <th scope="col" class="ps-4">Timestamp</th>
+                                        <th scope="col">Applicant Name</th>
+                                        <th scope="col">Annual Income</th>
+                                        <th scope="col">Loan Requested</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col" class="pe-4 text-end">Confidence</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="fs-14">
+                                    {% for entry in history %}
+                                    <tr>
+                                        <td class="ps-4 text-muted fs-13">{{ entry.date }}</td>
+                                        <td class="fw-medium text-navy">{{ entry.name }}</td>
+                                        <td class="text-muted">{{ entry.income }}</td>
+                                        <td class="text-muted">{{ entry.loan_amount }}</td>
+                                        <td>
+                                            {% if entry.status == 1 %}
+                                            <span class="badge bg-success-light text-success border border-success border-opacity-25 rounded-pill px-2.5 py-1.5 fs-12" id="badgeApproved-{{ loop.index }}">
+                                                <i class="bi bi-shield-check me-1"></i> Approved
+                                            </span>
+                                            {% else %}
+                                            <span class="badge bg-danger-light text-danger border border-danger border-opacity-25 rounded-pill px-2.5 py-1.5 fs-12" id="badgeRejected-{{ loop.index }}">
+                                                <i class="bi bi-shield-x me-1"></i> Rejected
+                                            </span>
+                                            {% endif %}
+                                        </td>
+                                        <td class="pe-4 text-end text-muted fw-semibold">{{ entry.confidence }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% else %}
+                        <div class="text-center py-5 px-4" id="emptyHistoryWrapper">
+                            <div class="bg-navy-light text-navy rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 70px; height: 70px;">
+                                <i class="bi bi-folder2-open fs-3 text-primary-blue"></i>
+                            </div>
+                            <h5 class="fw-bold text-navy outfit-font mb-2">No Prediction Logs Found</h5>
+                            <p class="text-muted max-w-400 mx-auto fs-14 mb-4">You have not processed any credit applications in this session yet. Run predictions to populate this audit table.</p>
+                            <a href="{{ url_for('predict') }}" class="btn btn-teal text-navy fw-semibold px-4 py-2.5 rounded-pill shadow-sm hover-grow" id="historyApplyBtn">
+                                Start Evaluation
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

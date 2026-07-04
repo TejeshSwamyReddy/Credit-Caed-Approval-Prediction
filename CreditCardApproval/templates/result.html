@@ -1,0 +1,149 @@
+{% extends 'layout.html' %}
+
+{% block title %}Apex Bank - Credit Decision Result{% endblock %}
+
+{% block content %}
+<section class="py-5 bg-light" id="resultSection">
+    <div class="container">
+        <!-- Header -->
+        <div class="row mb-4" id="resultHeader">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-6 fw-bold outfit-font text-navy" id="resultTitle">System Decision Report</h1>
+                <p class="text-muted" id="resultSubtext">Automated machine learning vetting completed on {{ result.timestamp }}</p>
+            </div>
+        </div>
+
+        <div class="row g-4" id="resultMainRow">
+            <!-- Decision Banner -->
+            <div class="col-lg-5" id="decisionCol">
+                {% if result.status == 1 %}
+                <!-- Approved Card -->
+                <div class="card border-0 shadow-lg rounded-4 overflow-hidden h-100 text-center approved-card-glow" id="approvedCard">
+                    <div class="bg-gradient-success py-5 text-white position-relative">
+                        <div class="decision-icon-wrapper bg-white text-success rounded-circle shadow mx-auto mb-3 d-flex align-items-center justify-content-center animate-pulse" style="width: 80px; height: 80px;">
+                            <i class="bi bi-check-circle-fill fs-1"></i>
+                        </div>
+                        <h2 class="fw-bold outfit-font mb-0" id="decisionStatusApproved">APPROVED</h2>
+                        <span class="badge bg-white text-success rounded-pill px-3 py-1.5 fw-semibold mt-2 shadow-sm" id="confidenceBadgeApproved">Confidence: {{ result.confidence }}</span>
+                    </div>
+                    <div class="card-body p-4 bg-white d-flex flex-column justify-content-between">
+                        <div class="mb-4" id="explanationWrapperApproved">
+                            <h5 class="fw-semibold text-navy outfit-font mb-3">Prediction Status</h5>
+                            <p class="text-muted fs-15 lh-relaxed" id="explanationTextApproved">
+                                {{ result.explanation }}
+                            </p>
+                            <div class="row text-start gx-2 gy-2">
+                                <div class="col-12">
+                                    <div class="border rounded-4 p-3 bg-light">
+                                        <div class="d-flex align-items-center gap-2 mb-2"><i class="bi bi-braces fs-5 text-teal"></i><strong>Model Used</strong></div>
+                                        <div class="text-navy fw-semibold">{{ result.model }}</div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="border rounded-4 p-3 bg-light">
+                                        <div class="d-flex align-items-center gap-2 mb-2"><i class="bi bi-speedometer2 fs-5 text-teal"></i><strong>Confidence</strong></div>
+                                        <div class="text-navy fw-semibold">{{ result.confidence }}</div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="border rounded-4 p-3 bg-light">
+                                        <div class="d-flex align-items-center gap-2 mb-2"><i class="bi bi-clock-history fs-5 text-teal"></i><strong>Prediction Time</strong></div>
+                                        <div class="text-navy fw-semibold">{{ result.prediction_time }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="approvedActionWrapper">
+                            <a href="{{ url_for('predict') }}" class="btn btn-navy text-white fw-bold px-4 py-2.5 rounded-pill w-100 mb-2 shadow-sm hover-grow" id="approvedCheckAnotherBtn">
+                                Check Another Applicant
+                            </a>
+                            <a href="{{ url_for('history') }}" class="btn btn-outline-secondary px-4 py-2.5 rounded-pill w-100" id="approvedHistoryBtn">
+                                View Prediction History
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <!-- Rejected Card -->
+                <div class="card border-0 shadow-lg rounded-4 overflow-hidden h-100 text-center rejected-card-glow" id="rejectedCard">
+                    <div class="bg-gradient-danger py-5 text-white position-relative">
+                        <div class="decision-icon-wrapper bg-white text-danger rounded-circle shadow mx-auto mb-3 d-flex align-items-center justify-content-center animate-pulse-rejection" style="width: 80px; height: 80px;">
+                            <i class="bi bi-x-circle-fill fs-1"></i>
+                        </div>
+                        <h2 class="fw-bold outfit-font mb-0" id="decisionStatusRejected">REJECTED</h2>
+                        <span class="badge bg-white text-danger rounded-pill px-3 py-1.5 fw-semibold mt-2 shadow-sm" id="confidenceBadgeRejected">Confidence: {{ result.confidence }}</span>
+                    </div>
+                    <div class="card-body p-4 bg-white d-flex flex-column justify-content-between">
+                        <div class="mb-4" id="explanationWrapperRejected">
+                            <h5 class="fw-semibold text-navy outfit-font mb-3">Prediction Status</h5>
+                            <p class="text-muted fs-15 lh-relaxed" id="explanationTextRejected">
+                                {{ result.explanation }}
+                            </p>
+                            <div class="row text-start gx-2 gy-2">
+                                <div class="col-12">
+                                    <div class="border rounded-4 p-3 bg-light">
+                                        <div class="d-flex align-items-center gap-2 mb-2"><i class="bi bi-braces fs-5 text-danger"></i><strong>Model Used</strong></div>
+                                        <div class="text-navy fw-semibold">{{ result.model }}</div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="border rounded-4 p-3 bg-light">
+                                        <div class="d-flex align-items-center gap-2 mb-2"><i class="bi bi-speedometer2 fs-5 text-danger"></i><strong>Confidence</strong></div>
+                                        <div class="text-navy fw-semibold">{{ result.confidence }}</div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="border rounded-4 p-3 bg-light">
+                                        <div class="d-flex align-items-center gap-2 mb-2"><i class="bi bi-clock-history fs-5 text-danger"></i><strong>Prediction Time</strong></div>
+                                        <div class="text-navy fw-semibold">{{ result.prediction_time }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="rejectedActionWrapper">
+                            <a href="{{ url_for('predict') }}" class="btn btn-navy text-white fw-bold px-4 py-2.5 rounded-pill w-100 mb-2 shadow-sm hover-grow" id="rejectedCheckAnotherBtn">
+                                Check Another Applicant
+                            </a>
+                            <a href="{{ url_for('history') }}" class="btn btn-outline-secondary px-4 py-2.5 rounded-pill w-100" id="rejectedHistoryBtn">
+                                View Prediction History
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Applicant Information -->
+            <div class="col-lg-7" id="applicantDetailsCol">
+                <div class="card border-0 shadow-sm rounded-4 h-100" id="applicantDetailsCard">
+                    <div class="card-header bg-white border-bottom border-light-gray py-3">
+                        <h5 class="card-title text-navy outfit-font fw-bold mb-0" id="applicantDetailsTitle">Submitted Applicant Profile</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive" id="applicantDetailsTableWrapper">
+                            <table class="table table-hover align-middle mb-0" id="applicantDetailsTable">
+                                <thead class="table-light fs-13">
+                                    <tr>
+                                        <th scope="col" class="ps-4">Parameter</th>
+                                        <th scope="col" class="pe-4 text-end">Submitted Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="fs-14">
+                                    {% for key, val in result.inputs.items() %}
+                                    <tr>
+                                        <td class="ps-4 fw-medium text-navy">{{ key }}</td>
+                                        <td class="pe-4 text-end {% if key == 'Credit History' %}{% if 'Good' in val %}text-success fw-bold{% else %}text-danger fw-bold{% endif %}{% else %}text-muted{% endif %}">
+                                            {{ val }}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

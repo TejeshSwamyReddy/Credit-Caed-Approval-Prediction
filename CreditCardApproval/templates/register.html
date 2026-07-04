@@ -1,0 +1,68 @@
+{% extends 'layout.html' %}
+
+{% block title %}Apex Bank Registration{% endblock %}
+
+{% block content %}
+<section class="container py-5">
+    <div class="row justify-content-center align-items-center min-vh-75">
+        <div class="col-12 col-lg-8">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="row g-0">
+                    <div class="col-md-5 bg-gradient-navy text-white p-5 d-flex flex-column justify-content-center">
+                        <h2 class="display-6 fw-bold mb-3">Create Your Apex Account</h2>
+                        <p class="text-light-gray fs-15 mb-4">Register now to save your profile, track predictions, and access the credit approval dashboard.</p>
+                        <ul class="list-unstyled text-light-gray fs-14">
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-teal me-2"></i>Secure login and user sessions</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-teal me-2"></i>Store applicant data for repeat access</li>
+                            <li><i class="bi bi-check-circle-fill text-teal me-2"></i>Easy transition to login after signup</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-7 bg-white p-5 d-flex align-items-center">
+                        <div class="w-100">
+                            <div class="text-center mb-4">
+                                <h3 class="fw-bold outfit-font mb-2">Register</h3>
+                                <p class="text-muted mb-0">Start your Apex Bank experience with secure account creation.</p>
+                            </div>
+
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                                {% if messages %}
+                                    {% for category, message in messages %}
+                                        <div class="alert alert-{{ category if category != 'error' else 'danger' }} alert-dismissible fade show border-0 shadow-sm mb-3" role="alert">
+                                            {{ message }}
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endwith %}
+
+                            <form method="post">
+                                <div class="mb-3">
+                                    <label for="name" class="form-label fw-semibold">Full Name</label>
+                                    <input type="text" class="form-control form-control-lg rounded-3" id="name" name="name" placeholder="Enter your full name" value="{{ form_data.name if form_data else '' }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label fw-semibold">Email</label>
+                                    <input type="email" class="form-control form-control-lg rounded-3" id="email" name="email" placeholder="Enter your email" value="{{ form_data.email if form_data else '' }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password" class="form-label fw-semibold">Password</label>
+                                    <input type="password" class="form-control form-control-lg rounded-3" id="password" name="password" placeholder="Create a password" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="confirm_password" class="form-label fw-semibold">Confirm Password</label>
+                                    <input type="password" class="form-control form-control-lg rounded-3" id="confirm_password" name="confirm_password" placeholder="Repeat your password" required>
+                                </div>
+                                <button type="submit" class="btn btn-teal btn-lg w-100 fw-semibold rounded-pill shadow-sm">Create Account</button>
+                            </form>
+
+                            <div class="text-center mt-3 text-muted fs-14">
+                                Already have an account? <a href="{{ url_for('login') }}" class="text-teal fw-semibold">Login here</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

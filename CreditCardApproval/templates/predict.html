@@ -1,0 +1,301 @@
+{% extends 'layout.html' %}
+
+{% block title %}Apex Bank - Credit Evaluation Form{% endblock %}
+
+{% block content %}
+<section class="py-5 bg-light" id="predictSection">
+    <div class="container">
+        <!-- Page Header -->
+        <div class="row mb-5" id="predictHeader">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-5 fw-bold outfit-font text-navy" id="predictTitle">Credit Card Application Vetting</h1>
+                <p class="text-muted lead" id="predictSubtext">Please enter the applicant's credentials below. Our credit risk machine learning engine will analyze the profile and output an instant decision.</p>
+            </div>
+        </div>
+
+        <!-- Prediction Form -->
+        <div class="row" id="predictFormRow">
+            <div class="col-xl-10 mx-auto">
+                <form action="{{ url_for('predict') }}" method="POST" class="needs-validation" novalidate id="creditPredictForm">
+                    
+                    <!-- Section 1: Personal Information -->
+                    <div class="card border-0 shadow-sm rounded-4 mb-4" id="personalCard">
+                        <div class="card-header bg-navy text-white rounded-top-4 py-3 d-flex align-items-center">
+                            <i class="bi bi-person-badge-fill me-2 fs-5"></i>
+                            <h5 class="card-title mb-0 outfit-font fw-semibold">1. Personal Demographics</h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="row g-3">
+                                <!-- Applicant Name (Optional, but useful for history) -->
+                                <div class="col-md-6">
+                                    <label for="applicant_name" class="form-label fw-medium">Applicant Full Name <span class="text-muted">(Optional)</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light"><i class="bi bi-person-fill text-muted"></i></span>
+                                        <input type="text" class="form-control" id="applicant_name" name="applicant_name" placeholder="e.g. John Doe" value="{{ form_data.get('applicant_name', '') if form_data else '' }}">
+                                    </div>
+                                </div>
+                                <!-- Gender -->
+                                <div class="col-md-3">
+                                    <label for="gender" class="form-label fw-medium">Gender <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="gender" name="gender" required>
+                                        <option value="" disabled {% if not form_data %}selected{% endif %}>Choose...</option>
+                                        <option value="Male" {% if form_data and form_data.get('gender') == 'Male' %}selected{% endif %}>Male</option>
+                                        <option value="Female" {% if form_data and form_data.get('gender') == 'Female' %}selected{% endif %}>Female</option>
+                                    </select>
+                                    <div class="invalid-feedback">Gender is required.</div>
+                                </div>
+                                <!-- Age -->
+                                <div class="col-md-3">
+                                    <label for="age" class="form-label fw-medium">Age (Years) <span class="text-danger">*</span></label>
+                                    <input type="number" class="form-control" id="age" name="age" min="18" max="100" placeholder="Min 18" value="{{ form_data.get('age', '') if form_data else '' }}" required>
+                                    <div class="invalid-feedback">Age must be 18 to 100.</div>
+                                </div>
+                                <!-- Education Level -->
+                                <div class="col-md-4">
+                                    <label for="education_level" class="form-label fw-medium">Education Level <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="education_level" name="education_level" required>
+                                        <option value="" disabled {% if not form_data %}selected{% endif %}>Choose...</option>
+                                        <option value="Secondary / secondary special" {% if form_data and form_data.get('education_level') == 'Secondary / secondary special' %}selected{% endif %}>Secondary / High School</option>
+                                        <option value="Higher education" {% if form_data and form_data.get('education_level') == 'Higher education' %}selected{% endif %}>Higher / University degree</option>
+                                        <option value="Incomplete higher" {% if form_data and form_data.get('education_level') == 'Incomplete higher' %}selected{% endif %}>Undergraduate / Incomplete Higher</option>
+                                        <option value="Lower secondary" {% if form_data and form_data.get('education_level') == 'Lower secondary' %}selected{% endif %}>Middle School / Lower Secondary</option>
+                                        <option value="Academic degree" {% if form_data and form_data.get('education_level') == 'Academic degree' %}selected{% endif %}>Postgraduate / Academic Degree</option>
+                                    </select>
+                                    <div class="invalid-feedback">Education level is required.</div>
+                                </div>
+                                <!-- Marital Status -->
+                                <div class="col-md-4">
+                                    <label for="marital_status" class="form-label fw-medium">Marital Status <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="marital_status" name="marital_status" required>
+                                        <option value="" disabled {% if not form_data %}selected{% endif %}>Choose...</option>
+                                        <option value="Married" {% if form_data and form_data.get('marital_status') == 'Married' %}selected{% endif %}>Married</option>
+                                        <option value="Single / not married" {% if form_data and form_data.get('marital_status') == 'Single / not married' %}selected{% endif %}>Single / Not married</option>
+                                        <option value="Civil marriage" {% if form_data and form_data.get('marital_status') == 'Civil marriage' %}selected{% endif %}>Civil Union / Civil marriage</option>
+                                        <option value="Separated" {% if form_data and form_data.get('marital_status') == 'Separated' %}selected{% endif %}>Separated</option>
+                                        <option value="Widow" {% if form_data and form_data.get('marital_status') == 'Widow' %}selected{% endif %}>Widowed</option>
+                                    </select>
+                                    <div class="invalid-feedback">Marital status is required.</div>
+                                </div>
+                                <!-- Number of Children -->
+                                <div class="col-md-4">
+                                    <label for="num_children" class="form-label fw-medium">Number of Children <span class="text-danger">*</span></label>
+                                    <input type="number" class="form-control" id="num_children" name="num_children" min="0" max="20" placeholder="e.g. 0" value="{{ form_data.get('num_children', '0') if form_data else '0' }}" required>
+                                    <div class="invalid-feedback">Number of children cannot be negative.</div>
+                                </div>
+                                <!-- Housing Type -->
+                                <div class="col-md-6">
+                                    <label for="housing_type" class="form-label fw-medium">Housing Arrangement <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="housing_type" name="housing_type" required>
+                                        <option value="" disabled {% if not form_data %}selected{% endif %}>Choose...</option>
+                                        <option value="House / apartment" {% if form_data and form_data.get('housing_type') == 'House / apartment' %}selected{% endif %}>Owned House / Apartment</option>
+                                        <option value="With parents" {% if form_data and form_data.get('housing_type') == 'With parents' %}selected{% endif %}>Living with Parents</option>
+                                        <option value="Rented apartment" {% if form_data and form_data.get('housing_type') == 'Rented apartment' %}selected{% endif %}>Rented Apartment</option>
+                                        <option value="Municipal apartment" {% if form_data and form_data.get('housing_type') == 'Municipal apartment' %}selected{% endif %}>Municipal / Public Housing</option>
+                                        <option value="Office apartment" {% if form_data and form_data.get('housing_type') == 'Office apartment' %}selected{% endif %}>Company / Office Apartment</option>
+                                        <option value="Co-op apartment" {% if form_data and form_data.get('housing_type') == 'Co-op apartment' %}selected{% endif %}>Co-operative Housing</option>
+                                    </select>
+                                    <div class="invalid-feedback">Housing type is required.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 2: Employment & Income -->
+                    <div class="card border-0 shadow-sm rounded-4 mb-4" id="employmentCard">
+                        <div class="card-header bg-navy text-white rounded-top-4 py-3 d-flex align-items-center">
+                            <i class="bi bi-briefcase-fill me-2 fs-5"></i>
+                            <h5 class="card-title mb-0 outfit-font fw-semibold">2. Employment & Income Profile</h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="row g-3">
+                                <!-- Employment Status -->
+                                <div class="col-md-4">
+                                    <label for="employment_status" class="form-label fw-medium">Employment Status <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="employment_status" name="employment_status" required>
+                                        <option value="" disabled {% if not form_data %}selected{% endif %}>Choose...</option>
+                                        <option value="Employed" {% if form_data and form_data.get('employment_status') == 'Employed' %}selected{% endif %}>Employed</option>
+                                        <option value="Unemployed" {% if form_data and form_data.get('employment_status') == 'Unemployed' %}selected{% endif %}>Unemployed</option>
+                                        <option value="Retired" {% if form_data and form_data.get('employment_status') == 'Retired' %}selected{% endif %}>Retired</option>
+                                    </select>
+                                    <div class="invalid-feedback">Employment status is required.</div>
+                                </div>
+                                <!-- Income Type -->
+                                <div class="col-md-4">
+                                    <label for="income_type" class="form-label fw-medium">Income Classification <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="income_type" name="income_type" required>
+                                        <option value="" disabled {% if not form_data %}selected{% endif %}>Choose...</option>
+                                        <option value="Working" {% if form_data and form_data.get('income_type') == 'Working' %}selected{% endif %}>Working Class / Salary</option>
+                                        <option value="Commercial associate" {% if form_data and form_data.get('income_type') == 'Commercial associate' %}selected{% endif %}>Commercial Associate</option>
+                                        <option value="Pensioner" {% if form_data and form_data.get('income_type') == 'Pensioner' %}selected{% endif %}>Pensioner / Pension</option>
+                                        <option value="State servant" {% if form_data and form_data.get('income_type') == 'State servant' %}selected{% endif %}>State / Government Servant</option>
+                                        <option value="Student" {% if form_data and form_data.get('income_type') == 'Student' %}selected{% endif %}>Student</option>
+                                    </select>
+                                    <div class="invalid-feedback">Income type is required.</div>
+                                </div>
+                                <!-- Occupation -->
+                                <div class="col-md-4">
+                                    <label for="occupation" class="form-label fw-medium">Occupation Group <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="occupation" name="occupation" required>
+                                        <option value="" disabled {% if not form_data %}selected{% endif %}>Choose...</option>
+                                        <option value="Laborers" {% if form_data and form_data.get('occupation') == 'Laborers' %}selected{% endif %}>Laborers</option>
+                                        <option value="Core staff" {% if form_data and form_data.get('occupation') == 'Core staff' %}selected{% endif %}>Core Staff / Corporate</option>
+                                        <option value="Sales staff" {% if form_data and form_data.get('occupation') == 'Sales staff' %}selected{% endif %}>Sales Staff</option>
+                                        <option value="Managers" {% if form_data and form_data.get('occupation') == 'Managers' %}selected{% endif %}>Managers / Executives</option>
+                                        <option value="Drivers" {% if form_data and form_data.get('occupation') == 'Drivers' %}selected{% endif %}>Drivers / Logistics</option>
+                                        <option value="High skill tech staff" {% if form_data and form_data.get('occupation') == 'High skill tech staff' %}selected{% endif %}>High Skill Tech Staff</option>
+                                        <option value="Accountants" {% if form_data and form_data.get('occupation') == 'Accountants' %}selected{% endif %}>Accountants / Finance</option>
+                                        <option value="Medicine staff" {% if form_data and form_data.get('occupation') == 'Medicine staff' %}selected{% endif %}>Medicine / Healthcare Staff</option>
+                                        <option value="Security staff" {% if form_data and form_data.get('occupation') == 'Security staff' %}selected{% endif %}>Security Staff</option>
+                                        <option value="Cooking staff" {% if form_data and form_data.get('occupation') == 'Cooking staff' %}selected{% endif %}>Cooking / Food Service Staff</option>
+                                        <option value="Cleaning staff" {% if form_data and form_data.get('occupation') == 'Cleaning staff' %}selected{% endif %}>Cleaning / Janitorial Staff</option>
+                                        <option value="Private service staff" {% if form_data and form_data.get('occupation') == 'Private service staff' %}selected{% endif %}>Private Service Staff</option>
+                                        <option value="Low-skill Laborers" {% if form_data and form_data.get('occupation') == 'Low-skill Laborers' %}selected{% endif %}>Low-skill Laborers</option>
+                                        <option value="Waiters/barmen staff" {% if form_data and form_data.get('occupation') == 'Waiters/barmen staff' %}selected{% endif %}>Waiters / Barmen Staff</option>
+                                        <option value="Secretaries" {% if form_data and form_data.get('occupation') == 'Secretaries' %}selected{% endif %}>Secretaries / Admin</option>
+                                        <option value="HR staff" {% if form_data and form_data.get('occupation') == 'HR staff' %}selected{% endif %}>HR Staff</option>
+                                        <option value="IT staff" {% if form_data and form_data.get('occupation') == 'IT staff' %}selected{% endif %}>IT / Engineering Staff</option>
+                                        <option value="Realty agents" {% if form_data and form_data.get('occupation') == 'Realty agents' %}selected{% endif %}>Realty Agents / Brokers</option>
+                                    </select>
+                                    <div class="invalid-feedback">Occupation is required.</div>
+                                </div>
+                                <!-- Employment Duration -->
+                                <div class="col-md-4">
+                                    <label for="employment_duration" class="form-label fw-medium">Employment Duration (Years) <span class="text-danger">*</span></label>
+                                    <input type="number" step="0.1" class="form-control" id="employment_duration" name="employment_duration" min="0" placeholder="e.g. 3.5 (0 if unemployed)" value="{{ form_data.get('employment_duration', '') if form_data else '' }}" required>
+                                    <div class="invalid-feedback">Enter a valid number of years. Use 0 if unemployed.</div>
+                                </div>
+                                <!-- Annual Income -->
+                                <div class="col-md-4">
+                                    <label for="annual_income" class="form-label fw-medium">Annual Income ($) <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="number" step="100" class="form-control" id="annual_income" name="annual_income" min="0" placeholder="e.g. 60000" value="{{ form_data.get('annual_income', '') if form_data else '' }}" required>
+                                        <div class="invalid-feedback">Annual income is required.</div>
+                                    </div>
+                                </div>
+                                <!-- Monthly Income (frontend derived but submitted) -->
+                                <div class="col-md-4">
+                                    <label for="monthly_income" class="form-label fw-medium">Monthly Income ($) <span class="text-muted">(Auto-Calculated)</span> <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="number" step="0.01" class="form-control bg-light" id="monthly_income" name="monthly_income" min="0" placeholder="Calculated monthly" value="{{ form_data.get('monthly_income', '') if form_data else '' }}" readonly required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 3: Financial Profile & Credit History -->
+                    <div class="card border-0 shadow-sm rounded-4 mb-5" id="financialCard">
+                        <div class="card-header bg-navy text-white rounded-top-4 py-3 d-flex align-items-center">
+                            <i class="bi bi-wallet2 me-2 fs-5"></i>
+                            <h5 class="card-title mb-0 outfit-font fw-semibold">3. Financial Risk & Credit Profile</h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="row g-3">
+                                <!-- Loan Amount -->
+                                <div class="col-md-6">
+                                    <label for="loan_amount" class="form-label fw-medium">Requested Loan Amount ($) <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="number" step="100" class="form-control" id="loan_amount" name="loan_amount" min="0" placeholder="e.g. 50000" value="{{ form_data.get('loan_amount', '') if form_data else '' }}" required>
+                                        <div class="invalid-feedback">Loan amount is required.</div>
+                                    </div>
+                                </div>
+                                <!-- Existing Loan Balance -->
+                                <div class="col-md-6">
+                                    <label for="existing_loan_balance" class="form-label fw-medium">Existing Debt Balance ($) <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="number" step="100" class="form-control" id="existing_loan_balance" name="existing_loan_balance" min="0" placeholder="e.g. 15000 (0 if none)" value="{{ form_data.get('existing_loan_balance', '') if form_data else '' }}" required>
+                                        <div class="invalid-feedback">Existing loan balance is required. Use 0 if none.</div>
+                                    </div>
+                                </div>
+                                <!-- Credit History -->
+                                <div class="col-md-6">
+                                    <label for="credit_history" class="form-label fw-medium">Credit History Rating <span class="text-danger">*</span></label>
+                                    <select class="form-select text-navy fw-semibold" id="credit_history" name="credit_history" required>
+                                        <option value="" disabled {% if not form_data %}selected{% endif %}>Choose...</option>
+                                        <option value="Good" class="text-success" {% if form_data and form_data.get('credit_history') == 'Good' %}selected{% endif %}>Good Credit (No Defaults / On Time Payments)</option>
+                                        <option value="Bad" class="text-danger" {% if form_data and form_data.get('credit_history') == 'Bad' %}selected{% endif %}>Bad Credit (Historical Defaults / Delinquencies)</option>
+                                    </select>
+                                    <div class="invalid-feedback">Credit history evaluation is required.</div>
+                                </div>
+                                <!-- Number of Credit Inquiries -->
+                                <div class="col-md-6">
+                                    <label for="credit_inquiries" class="form-label fw-medium">Credit Inquiries (Past 6 Months) <span class="text-danger">*</span></label>
+                                    <input type="number" class="form-control" id="credit_inquiries" name="credit_inquiries" min="0" max="100" placeholder="e.g. 0" value="{{ form_data.get('credit_inquiries', '0') if form_data else '0' }}" required>
+                                    <div class="invalid-feedback">Number of credit inquiries is required.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="text-center mb-5" id="formSubmitWrapper">
+                        <button type="submit" class="btn btn-navy text-white fw-bold px-5 py-3 rounded-pill btn-lg shadow hover-grow animate-pulse-btn" id="predictSubmitBtn">
+                            <i class="bi bi-shield-check me-2"></i>Evaluate Application Risk
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Self-executing script to bind events on load for validation and calculation
+    document.addEventListener('DOMContentLoaded', function() {
+        // Bootstrap 5 client-side validation
+        const form = document.getElementById('creditPredictForm');
+        form.addEventListener('submit', function(event) {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        }, false);
+
+        // Auto-calculate monthly income based on annual income
+        const annualIncomeInput = document.getElementById('annual_income');
+        const monthlyIncomeInput = document.getElementById('monthly_income');
+
+        function updateMonthlyIncome() {
+            const annual = parseFloat(annualIncomeInput.value);
+            if (!isNaN(annual) && annual >= 0) {
+                const monthly = annual / 12.0;
+                monthlyIncomeInput.value = monthly.toFixed(2);
+            } else {
+                monthlyIncomeInput.value = '';
+            }
+        }
+
+        annualIncomeInput.addEventListener('input', updateMonthlyIncome);
+        annualIncomeInput.addEventListener('change', updateMonthlyIncome);
+
+        // Run initially in case of validation failures and value recovery
+        updateMonthlyIncome();
+
+        // Dynamically configure values based on Employment Status
+        const empStatusSelect = document.getElementById('employment_status');
+        const empDurationInput = document.getElementById('employment_duration');
+        const occupationSelect = document.getElementById('occupation');
+
+        empStatusSelect.addEventListener('change', function() {
+            const status = empStatusSelect.value;
+            if (status === 'Unemployed') {
+                empDurationInput.value = 0;
+                empDurationInput.setAttribute('readonly', 'true');
+            } else if (status === 'Retired') {
+                empDurationInput.value = 0;
+                empDurationInput.removeAttribute('readonly');
+            } else {
+                empDurationInput.removeAttribute('readonly');
+            }
+        });
+    });
+</script>
+{% endblock %}

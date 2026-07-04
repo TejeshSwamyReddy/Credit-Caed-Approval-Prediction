@@ -1,0 +1,112 @@
+{% extends 'layout.html' %}
+
+{% block title %}Apex Bank - Credit Card Approval Prediction Using ML{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section bg-gradient-navy text-white py-5 d-flex align-items-center" id="heroSection">
+    <div class="container py-4">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-7 text-center text-lg-start animate-fade-in" id="heroTextCol">
+                <span class="badge bg-teal text-navy px-3 py-2 rounded-pill fw-bold mb-3 tracking-wide outfit-font shadow-sm" id="heroBadge">AI-POWERED CREDIT DECISIONING</span>
+                <h1 class="display-4 fw-extrabold outfit-font mb-3 lh-sm" id="heroHeading">
+                    Credit Card Approval <br>
+                    <span class="text-gradient-teal">Prediction Engine</span>
+                </h1>
+                <p class="lead text-light-gray mb-4 fs-18 fw-light" id="heroLeadText">
+                    Deliver fast, secure credit decisions using a production-ready XGBoost model. Real-time underwriting, responsive design, and reliable financial risk assessment for modern banking teams.
+                </p>
+                <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center justify-content-lg-start" id="heroActionWrapper">
+                    <a href="{{ url_for('predict') }}" class="btn btn-teal text-navy fw-semibold px-4 py-3 rounded-pill btn-lg shadow hover-grow animate-pulse-btn" id="heroPredictBtn">
+                        <i class="bi bi-shield-check me-2"></i>Predict Credit Card Approval
+                    </a>
+                    <a href="{{ url_for('predict') }}" class="btn btn-outline-light px-4 py-3 rounded-pill btn-lg" id="heroLearnMoreBtn">
+                        Start Predicting <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-5 text-center d-none d-lg-block animate-float" id="heroCardCol">
+                <!-- Premium Glass Card mockup -->
+                <div class="credit-card-mockup position-relative mx-auto" id="creditCardMockup">
+                    <div class="credit-card-inner bg-gradient-card shadow-lg rounded-4 p-4 text-start">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <span class="text-white opacity-75 fs-14 fw-semibold">APEX PLATINUM</span>
+                            <i class="bi bi-wallet2 text-teal fs-3"></i>
+                        </div>
+                        <div class="mb-4 pt-2">
+                            <i class="bi bi-cpu-fill text-warning fs-3 mb-2 d-block"></i>
+                            <div class="text-white fs-22 tracking-wider outfit-font fw-bold">•••• •••• •••• 9823</div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center text-white">
+                            <div>
+                                <div class="fs-10 text-uppercase opacity-50">Cardholder</div>
+                                <div class="fs-14 fw-medium">APPLICANT CHIP</div>
+                            </div>
+                            <div class="text-end">
+                                <div class="fs-10 text-uppercase opacity-50">Status</div>
+                                <span class="badge bg-success-light text-success rounded-pill px-2 py-1 fs-12 border border-success border-opacity-25" id="mockupStatusBadge">APPROVED</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5 bg-white" id="featuresSection">
+    <div class="container py-4">
+        <div class="text-center mb-5 max-w-700 mx-auto" id="featuresHeader">
+            <h2 class="section-title outfit-font fw-bold" id="featuresTitle">System Core Capabilities</h2>
+            <p class="text-muted fs-15" id="featuresDescription">Designed with state-of-the-art architectures to simulate and deploy robust machine learning classification workflows.</p>
+        </div>
+        <div class="row g-4" id="featuresGrid">
+            <!-- Feature 1 -->
+            <div class="col-md-4" id="featureCol1">
+                <div class="card border-0 bg-light p-4 h-100 rounded-4 transition-all hover-shadow-sm hover-lift" id="featureCard1">
+                    <div class="icon-box bg-navy-light text-navy rounded-3 p-3 mb-3 d-inline-block" id="featureIcon1">
+                        <i class="bi bi-lightning-charge-fill fs-4 text-primary-blue"></i>
+                    </div>
+                    <h5 class="fw-bold outfit-font" id="featureHeading1">Instant Approvals</h5>
+                    <p class="text-muted fs-14 mb-0" id="featureText1">Submit details and receive predictions within milliseconds, simulating immediate loan vetting.</p>
+                </div>
+            </div>
+            <!-- Feature 2 -->
+            <div class="col-md-4" id="featureCol2">
+                <div class="card border-0 bg-light p-4 h-100 rounded-4 transition-all hover-shadow-sm hover-lift" id="featureCard2">
+                    <div class="icon-box bg-navy-light text-navy rounded-3 p-3 mb-3 d-inline-block" id="featureIcon2">
+                        <i class="bi bi-shield-lock-fill fs-4 text-primary-blue"></i>
+                    </div>
+                    <h5 class="fw-bold outfit-font" id="featureHeading2">16 Vetting Parameters</h5>
+                    <p class="text-muted fs-14 mb-0" id="featureText2">Leverages deep demographic, occupation, and existing debt metrics for highly personalized credit assessments.</p>
+                </div>
+            </div>
+            <!-- Feature 3 -->
+            <div class="col-md-4" id="featureCol3">
+                <div class="card border-0 bg-light p-4 h-100 rounded-4 transition-all hover-shadow-sm hover-lift" id="featureCard3">
+                    <div class="icon-box bg-navy-light text-navy rounded-3 p-3 mb-3 d-inline-block" id="featureIcon3">
+                        <i class="bi bi-bar-chart-fill fs-4 text-primary-blue"></i>
+                    </div>
+                    <h5 class="fw-bold outfit-font" id="featureHeading3">Historical Log</h5>
+                    <p class="text-muted fs-14 mb-0" id="featureText3">Maintains a session history log to compare and analyze recent applicant predictions side-by-side.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5 bg-navy text-white text-center position-relative overflow-hidden" id="ctaSection">
+    <div class="bg-pattern-overlay"></div>
+    <div class="container py-4 position-relative z-1 animate-fade-in" id="ctaContainer">
+        <h2 class="display-5 outfit-font fw-extrabold mb-3" id="ctaHeading">Ready to Run Credit Risks Assessments?</h2>
+        <p class="lead text-light-gray max-w-600 mx-auto mb-4 fs-16 fw-light" id="ctaSubtext">
+            Test the decision system using our secure client-vetted sandbox predict form. Get instant approvals or structured rejection feedback.
+        </p>
+        <a href="{{ url_for('predict') }}" class="btn btn-teal text-navy fw-semibold px-5 py-3 rounded-pill btn-lg shadow hover-grow" id="ctaPredictBtn">
+            Get Approval Prediction <i class="bi bi-arrow-right ms-2"></i>
+        </a>
+    </div>
+</section>
+{% endblock %}

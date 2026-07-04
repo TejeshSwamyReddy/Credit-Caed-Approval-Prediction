@@ -1,0 +1,295 @@
+/* Premium Banking Theme Color System */
+:root {
+    --navy-primary: #0A192F;
+    --navy-secondary: #172A45;
+    --blue-accent: #00b4d8;
+    --teal-primary: #00f5d4;
+    --dark-slate: #334155;
+    --light-bg: #F8FAFC;
+    --light-blue-bg: #EEF2F6;
+    --success-green: #10B981;
+    --success-light: #ECFDF5;
+    --danger-red: #EF4444;
+    --danger-light: #FEF2F2;
+    --white: #FFFFFF;
+    --border-gray: #E2E8F0;
+    --text-muted: #64748B;
+}
+
+/* Base Styles & Font Overrides */
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--dark-slate);
+    background-color: var(--light-bg);
+}
+
+.outfit-font {
+    font-family: 'Outfit', sans-serif;
+}
+
+/* Tracking & Text Helpers */
+.tracking-wide {
+    letter-spacing: 0.05em;
+}
+
+.text-teal {
+    color: var(--teal-primary) !important;
+}
+
+.bg-navy {
+    background-color: var(--navy-primary) !important;
+}
+
+.bg-secondary-navy {
+    background-color: var(--navy-secondary) !important;
+}
+
+.text-light-gray {
+    color: #CBD5E1 !important;
+}
+
+.text-muted-gray {
+    color: #94A3B8 !important;
+}
+
+.fs-12 { font-size: 12px; }
+.fs-13 { font-size: 13px; }
+.fs-14 { font-size: 14px; }
+.fs-15 { font-size: 15px; }
+.fs-16 { font-size: 16px; }
+.fs-18 { font-size: 18px; }
+.fs-22 { font-size: 22px; }
+
+.max-w-400 { max-width: 400px; }
+.max-w-600 { max-width: 600px; }
+.max-w-700 { max-width: 700px; }
+
+/* Custom Navigation Styling */
+#mainNavbar {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.3s ease;
+}
+
+#mainNavbar .nav-link {
+    color: #CBD5E1;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+#mainNavbar .nav-link:hover,
+#mainNavbar .nav-link.active {
+    color: var(--teal-primary);
+}
+
+.btn-teal {
+    background-color: var(--teal-primary);
+    color: var(--navy-primary) !important;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-teal:hover {
+    background-color: #00d7ba;
+    box-shadow: 0 4px 15px rgba(0, 245, 212, 0.4);
+    transform: translateY(-2px);
+}
+
+.btn-navy {
+    background-color: var(--navy-primary);
+    color: var(--white);
+    border: 1px solid var(--navy-secondary);
+    transition: all 0.3s ease;
+}
+
+.btn-navy:hover {
+    background-color: var(--navy-secondary);
+    color: var(--teal-primary);
+    box-shadow: 0 4px 15px rgba(10, 25, 47, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Gradients */
+.bg-gradient-navy {
+    background: linear-gradient(135deg, var(--navy-primary) 0%, var(--navy-secondary) 100%);
+}
+
+.bg-gradient-card {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+}
+
+.bg-gradient-success {
+    background: linear-gradient(135deg, #059669 0%, #10B981 100%);
+}
+
+.bg-gradient-danger {
+    background: linear-gradient(135deg, #DC2626 0%, #EF4444 100%);
+}
+
+/* Badge highlights */
+.bg-success-light {
+    background-color: var(--success-light);
+}
+
+.bg-danger-light {
+    background-color: var(--danger-light);
+}
+
+.bg-navy-light {
+    background-color: var(--light-blue-bg);
+}
+
+/* Card Mockup Float & Animation */
+.credit-card-mockup {
+    width: 350px;
+    height: 200px;
+    perspective: 1000px;
+}
+
+.credit-card-inner {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Keyframe Animations */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+.animate-float {
+    animation: float 4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+    70% { box-shadow: 0 0 0 15px rgba(16, 185, 129, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.animate-pulse {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse-rejection {
+    0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+    70% { box-shadow: 0 0 0 15px rgba(239, 68, 68, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+.animate-pulse-rejection {
+    animation: pulse-rejection 2s infinite;
+}
+
+@keyframes pulse-btn {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+}
+
+.animate-pulse-btn:hover {
+    animation: pulse-btn 1.5s infinite ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+/* Micro Interactions & Hover Classes */
+.hover-grow {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hover-grow:hover {
+    transform: scale(1.03);
+}
+
+.hover-teal:hover {
+    color: var(--teal-primary) !important;
+}
+
+.hover-lift {
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Model cards specific styles */
+.model-card {
+    transition: all 0.3s ease;
+    border: 1px solid var(--border-gray);
+}
+
+.model-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(10, 25, 47, 0.08) !important;
+    border-color: var(--blue-accent);
+}
+
+/* Improve contrast for the homepage ML models section */
+#models-section .badge,
+#models-section .model-badge,
+#models-section .model-card h5,
+#models-section .model-card p {
+    color: #0f172a !important;
+}
+
+#models-section .badge {
+    background-color: #f8fafc !important;
+    border: 1px solid rgba(15, 23, 42, 0.16) !important;
+}
+
+#models-section .model-card {
+    border-color: rgba(15, 23, 42, 0.12);
+}
+
+/* Glow effects for results */
+.approved-card-glow {
+    box-shadow: 0 15px 35px rgba(16, 185, 129, 0.15);
+}
+
+.rejected-card-glow {
+    box-shadow: 0 15px 35px rgba(239, 68, 68, 0.15);
+}
+
+/* Form Styles */
+.form-label {
+    font-size: 14px;
+    color: var(--navy-secondary);
+}
+
+.form-control, .form-select {
+    border: 1px solid var(--border-gray);
+    padding: 11px 16px;
+    font-size: 14.5px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--blue-accent);
+    box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.15);
+}
+
+
+/* CTA overlay */
+.bg-pattern-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1.5px, transparent 1.5px);
+    background-size: 24px 24px;
+    opacity: 0.7;
+}
+
+/* Footer elements */
+.text-light-gray {
+    color: #E2E8F0 !important;
+}
